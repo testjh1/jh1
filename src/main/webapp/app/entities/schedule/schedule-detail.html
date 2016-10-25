@@ -1,0 +1,40 @@
+
+<div>
+    <h2><span data-translate="jh2App.schedule.detail.title">Schedule</span> {{vm.schedule.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dd>
+            <span ng-repeat="room in vm.schedule.rooms">
+                <a ui-sref="room-detail({id: room.id})">{{room.numberAudience}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span data-translate="jh2App.schedule.beginSchedule">Begin Schedule</span></dt>
+        <dd>
+            <span>{{vm.schedule.beginSchedule | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="jh2App.schedule.endSchedule">End Schedule</span></dt>
+        <dd>
+            <span>{{vm.schedule.endSchedule | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="jh2App.schedule.presentation">Presentation</span></dt>
+        <dd>
+            <span ng-repeat="presentation in vm.schedule.presentations">
+                <a ui-sref="presentation-detail({id: presentation.id})">{{presentation.namePresentation}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span data-translate="jh2App.schedule.room">Room</span></dt>
+
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="schedule-detail.edit({id:vm.schedule.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "login",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "namePresentation",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "topicPresentation",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "textPresentation",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20161025112201",
+    "entityTableName": "presentation",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

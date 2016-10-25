@@ -1,0 +1,37 @@
+
+<div>
+    <h2><span data-translate="jh2App.presentation.detail.title">Presentation</span> {{vm.presentation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="jh2App.presentation.namePresentation">Name Presentation</span></dt>
+        <dd>
+            <span>{{vm.presentation.namePresentation}}</span>
+        </dd>
+        <dt><span data-translate="jh2App.presentation.topicPresentation">Topic Presentation</span></dt>
+        <dd>
+            <span>{{vm.presentation.topicPresentation}}</span>
+        </dd>
+        <dt><span data-translate="jh2App.presentation.textPresentation">Text Presentation</span></dt>
+        <dd>
+            <span>{{vm.presentation.textPresentation}}</span>
+        </dd>
+        <dt><span data-translate="jh2App.presentation.user">User</span></dt>
+        <dd>
+            <span ng-repeat="user in vm.presentation.users">
+                {{user.login}}{{$last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="presentation-detail.edit({id:vm.presentation.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

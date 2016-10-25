@@ -1,0 +1,66 @@
+<div>
+    <h2 data-translate="jh2App.presentation.home.title">Presentations</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="presentation.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="jh2App.presentation.home.createLabel">
+                        Create new Presentation
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="jh2App.presentation.namePresentation">Name Presentation</span></th>
+                    <th><span data-translate="jh2App.presentation.topicPresentation">Topic Presentation</span></th>
+                    <th><span data-translate="jh2App.presentation.textPresentation">Text Presentation</span></th>
+                    <th><span data-translate="jh2App.presentation.user">User</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="presentation in vm.presentations track by presentation.id">
+                    <td><a ui-sref="presentation-detail({id:presentation.id})">{{presentation.id}}</a></td>
+                    <td>{{presentation.namePresentation}}</td>
+                    <td>{{presentation.topicPresentation}}</td>
+                    <td>{{presentation.textPresentation}}</td>
+                    <td>
+                        <span ng-repeat="user in presentation.users">
+                            {{user.login}}{{$last ? '' : ', '}}
+                        </span>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="presentation-detail({id:presentation.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="presentation.edit({id:presentation.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="presentation.delete({id:presentation.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

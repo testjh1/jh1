@@ -1,0 +1,18 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "numberAudience",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20161025112202",
+    "entityTableName": "room",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

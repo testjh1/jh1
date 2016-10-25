@@ -1,0 +1,22 @@
+{
+    "jh2App": {
+        "room" : {
+            "home": {
+                "title": "Rooms",
+                "createLabel": "Create a new Room",
+                "createOrEditLabel": "Create or edit a Room",
+                "search": "Search for Room"
+            },
+            "created": "A new Room is created with identifier {{ param }}",
+            "updated": "A Room is updated with identifier {{ param }}",
+            "deleted": "A Room is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Room {{ id }}?"
+            },
+            "detail": {
+                "title": "Room"
+            },
+            "numberAudience": "Number Audience"
+        }
+    }
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity Schedule.
+    -->
+    <changeSet id="20161025112200-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="schedules_id"
+                                 baseTableName="schedule_presentation"
+                                 constraintName="schedule_prese_schedules_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="schedule"/>
+        <addForeignKeyConstraint baseColumnNames="presentations_id"
+                                 baseTableName="schedule_presentation"
+                                 constraintName="schedule_prese_presentations_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="presentation"/>
+        
+        <addForeignKeyConstraint baseColumnNames="schedules_id"
+                                 baseTableName="schedule_room"
+                                 constraintName="fk_schedule_room_schedules_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="schedule"/>
+        <addForeignKeyConstraint baseColumnNames="rooms_id"
+                                 baseTableName="schedule_room"
+                                 constraintName="fk_schedule_room_rooms_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="room"/>
+        
+    </changeSet>
+</databaseChangeLog>

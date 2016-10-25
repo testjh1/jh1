@@ -1,0 +1,23 @@
+entity Schedule {
+	beginSchedule ZonedDateTime required,
+    endSchedule ZonedDateTime required
+}
+
+
+entity Presentation {
+	namePresentation String required,
+	topicPresentation String,
+	textPresentation String
+	
+}
+entity Room {
+	numberAudience Long required
+}
+
+
+relationship ManyToMany {
+	Schedule{presentation(namePresentation)} to Presentation,
+	Schedule{room(numberAudience)} to Room,  
+	Presentation{user(login)} to User  
+}
+
