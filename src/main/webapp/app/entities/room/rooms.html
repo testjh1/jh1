@@ -28,7 +28,7 @@
                     <td><a ui-sref="room-detail({id:room.id})">{{room.id}}</a></td>
                     <td>{{room.numberAudience}}</td>
                     <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
+                        <div class="btn-group flex-btn-group-container" has-any-authority="ROLE_ADMIN">
                             <button type="submit"
                                     ui-sref="room-detail({id:room.id})"
                                     class="btn btn-info btn-sm">

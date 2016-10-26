@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.Schedule;
 
 import com.mycompany.myapp.repository.ScheduleRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -28,7 +30,7 @@ import java.util.Optional;
 public class ScheduleResource {
 
     private final Logger log = LoggerFactory.getLogger(ScheduleResource.class);
-        
+
     @Inject
     private ScheduleRepository scheduleRepository;
 
@@ -43,6 +45,7 @@ public class ScheduleResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Schedule> createSchedule(@Valid @RequestBody Schedule schedule) throws URISyntaxException {
         log.debug("REST request to save Schedule : {}", schedule);
         if (schedule.getId() != null) {
@@ -67,6 +70,7 @@ public class ScheduleResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Schedule> updateSchedule(@Valid @RequestBody Schedule schedule) throws URISyntaxException {
         log.debug("REST request to update Schedule : {}", schedule);
         if (schedule.getId() == null) {
@@ -123,6 +127,7 @@ public class ScheduleResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
         log.debug("REST request to delete Schedule : {}", id);
         scheduleRepository.delete(id);

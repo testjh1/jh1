@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.Room;
 
 import com.mycompany.myapp.repository.RoomRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -28,7 +30,7 @@ import java.util.Optional;
 public class RoomResource {
 
     private final Logger log = LoggerFactory.getLogger(RoomResource.class);
-        
+
     @Inject
     private RoomRepository roomRepository;
 
@@ -43,6 +45,7 @@ public class RoomResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Room> createRoom(@Valid @RequestBody Room room) throws URISyntaxException {
         log.debug("REST request to save Room : {}", room);
         if (room.getId() != null) {
@@ -67,6 +70,7 @@ public class RoomResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Room> updateRoom(@Valid @RequestBody Room room) throws URISyntaxException {
         log.debug("REST request to update Room : {}", room);
         if (room.getId() == null) {
@@ -119,6 +123,7 @@ public class RoomResource {
      * @param id the id of the room to delete
      * @return the ResponseEntity with status 200 (OK)
      */
+    @Secured(AuthoritiesConstants.ADMIN)
     @RequestMapping(value = "/rooms/{id}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)

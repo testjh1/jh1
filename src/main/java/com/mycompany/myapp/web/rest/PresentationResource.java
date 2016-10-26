@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.Presentation;
 
 import com.mycompany.myapp.repository.PresentationRepository;
+import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -28,7 +30,7 @@ import java.util.Optional;
 public class PresentationResource {
 
     private final Logger log = LoggerFactory.getLogger(PresentationResource.class);
-        
+
     @Inject
     private PresentationRepository presentationRepository;
 
@@ -43,6 +45,7 @@ public class PresentationResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Presentation> createPresentation(@Valid @RequestBody Presentation presentation) throws URISyntaxException {
         log.debug("REST request to save Presentation : {}", presentation);
         if (presentation.getId() != null) {
@@ -67,6 +70,7 @@ public class PresentationResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Presentation> updatePresentation(@Valid @RequestBody Presentation presentation) throws URISyntaxException {
         log.debug("REST request to update Presentation : {}", presentation);
         if (presentation.getId() == null) {
@@ -123,6 +127,7 @@ public class PresentationResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Void> deletePresentation(@PathVariable Long id) {
         log.debug("REST request to delete Presentation : {}", id);
         presentationRepository.delete(id);
