@@ -29,32 +29,18 @@
                 <constraints nullable="false" />
             </column>
             
+            <column name="presentation_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="room_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="schedule" columnName="begin_schedule" columnDataType="datetime"/>
         <dropDefaultValue tableName="schedule" columnName="end_schedule" columnDataType="datetime"/>
-        
-        <createTable tableName="schedule_presentation">
-            <column name="presentations_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="schedules_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="schedules_id, presentations_id" tableName="schedule_presentation"/>
-        
-        <createTable tableName="schedule_room">
-            <column name="rooms_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="schedules_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="schedules_id, rooms_id" tableName="schedule_room"/>
         
     </changeSet>
 </databaseChangeLog>

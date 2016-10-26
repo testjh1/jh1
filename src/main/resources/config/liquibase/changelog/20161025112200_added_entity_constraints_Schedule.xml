@@ -8,27 +8,17 @@
     -->
     <changeSet id="20161025112200-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="schedules_id"
-                                 baseTableName="schedule_presentation"
-                                 constraintName="schedule_prese_schedules_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="schedule"/>
-        <addForeignKeyConstraint baseColumnNames="presentations_id"
-                                 baseTableName="schedule_presentation"
-                                 constraintName="schedule_prese_presentations_id"
+        <addForeignKeyConstraint baseColumnNames="presentation_id"
+                                 baseTableName="schedule"
+                                 constraintName="fk_schedule_presentation_id"
                                  referencedColumnNames="id"
                                  referencedTableName="presentation"/>
-        
-        <addForeignKeyConstraint baseColumnNames="schedules_id"
-                                 baseTableName="schedule_room"
-                                 constraintName="fk_schedule_room_schedules_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="schedule"/>
-        <addForeignKeyConstraint baseColumnNames="rooms_id"
-                                 baseTableName="schedule_room"
-                                 constraintName="fk_schedule_room_rooms_id"
+
+        <addForeignKeyConstraint baseColumnNames="room_id"
+                                 baseTableName="schedule"
+                                 constraintName="fk_schedule_room_id"
                                  referencedColumnNames="id"
                                  referencedTableName="room"/>
-        
+
     </changeSet>
 </databaseChangeLog>

@@ -5,8 +5,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -30,17 +28,11 @@ public class Schedule implements Serializable {
     @Column(name = "end_schedule", nullable = false)
     private ZonedDateTime endSchedule;
 
-    @ManyToMany
-    @JoinTable(name = "schedule_presentation",
-               joinColumns = @JoinColumn(name="schedules_id", referencedColumnName="ID"),
-               inverseJoinColumns = @JoinColumn(name="presentations_id", referencedColumnName="ID"))
-    private Set<Presentation> presentations = new HashSet<>();
+    @ManyToOne
+    private Presentation presentation;
 
-    @ManyToMany
-    @JoinTable(name = "schedule_room",
-               joinColumns = @JoinColumn(name="schedules_id", referencedColumnName="ID"),
-               inverseJoinColumns = @JoinColumn(name="rooms_id", referencedColumnName="ID"))
-    private Set<Room> rooms = new HashSet<>();
+    @ManyToOne
+    private Room room;
 
     public Long getId() {
         return id;
@@ -76,50 +68,30 @@ public class Schedule implements Serializable {
         this.endSchedule = endSchedule;
     }
 
-    public Set<Presentation> getPresentations() {
-        return presentations;
+    public Presentation getPresentation() {
+        return presentation;
     }
 
-    public Schedule presentations(Set<Presentation> presentations) {
-        this.presentations = presentations;
+    public Schedule presentation(Presentation presentation) {
+        this.presentation = presentation;
         return this;
     }
 
-    public Schedule addPresentation(Presentation presentation) {
-        presentations.add(presentation);
+    public void setPresentation(Presentation presentation) {
+        this.presentation = presentation;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public Schedule room(Room room) {
+        this.room = room;
         return this;
     }
 
-    public Schedule removePresentation(Presentation presentation) {
-        presentations.remove(presentation);
-        return this;
-    }
-
-    public void setPresentations(Set<Presentation> presentations) {
-        this.presentations = presentations;
-    }
-
-    public Set<Room> getRooms() {
-        return rooms;
-    }
-
-    public Schedule rooms(Set<Room> rooms) {
-        this.rooms = rooms;
-        return this;
-    }
-
-    public Schedule addRoom(Room room) {
-        rooms.add(room);
-        return this;
-    }
-
-    public Schedule removeRoom(Room room) {
-        rooms.remove(room);
-        return this;
-    }
-
-    public void setRooms(Set<Room> rooms) {
-        this.rooms = rooms;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     @Override

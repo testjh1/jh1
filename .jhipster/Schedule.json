@@ -2,20 +2,16 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
+            "relationshipType": "many-to-one",
             "relationshipName": "presentation",
             "otherEntityName": "presentation",
-            "otherEntityField": "namePresentation",
-            "ownerSide": true
+            "otherEntityField": "namePresentation"
         },
         {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
+            "relationshipType": "many-to-one",
             "relationshipName": "room",
             "otherEntityName": "room",
-            "otherEntityField": "numberAudience",
-            "ownerSide": true
+            "otherEntityField": "numberAudience"
         }
     ],
     "fields": [

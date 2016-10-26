@@ -4,11 +4,6 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="dl-horizontal jh-entity-details">
-        <dd>
-            <span ng-repeat="room in vm.schedule.rooms">
-                <a ui-sref="room-detail({id: room.id})">{{room.numberAudience}}</a>{{$last ? '' : ', '}}
-            </span>
-        </dd>
         <dt><span data-translate="jh2App.schedule.beginSchedule">Begin Schedule</span></dt>
         <dd>
             <span>{{vm.schedule.beginSchedule | date:'medium'}}</span>
@@ -19,12 +14,12 @@
         </dd>
         <dt><span data-translate="jh2App.schedule.presentation">Presentation</span></dt>
         <dd>
-            <span ng-repeat="presentation in vm.schedule.presentations">
-                <a ui-sref="presentation-detail({id: presentation.id})">{{presentation.namePresentation}}</a>{{$last ? '' : ', '}}
-            </span>
+            <a ui-sref="presentation-detail({id:vm.schedule.presentation.id})">{{vm.schedule.presentation.namePresentation}}</a>
         </dd>
         <dt><span data-translate="jh2App.schedule.room">Room</span></dt>
-
+        <dd>
+            <a ui-sref="room-detail({id:vm.schedule.room.id})">{{vm.schedule.room.numberAudience}}</a>
+        </dd>
     </dl>
 
     <button type="submit"

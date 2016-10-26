@@ -89,7 +89,7 @@ public class ScheduleResource {
     @Timed
     public List<Schedule> getAllSchedules() {
         log.debug("REST request to get all Schedules");
-        List<Schedule> schedules = scheduleRepository.findAllWithEagerRelationships();
+        List<Schedule> schedules = scheduleRepository.findAll();
         return schedules;
     }
 
@@ -105,7 +105,7 @@ public class ScheduleResource {
     @Timed
     public ResponseEntity<Schedule> getSchedule(@PathVariable Long id) {
         log.debug("REST request to get Schedule : {}", id);
-        Schedule schedule = scheduleRepository.findOneWithEagerRelationships(id);
+        Schedule schedule = scheduleRepository.findOne(id);
         return Optional.ofNullable(schedule)
             .map(result -> new ResponseEntity<>(
                 result,

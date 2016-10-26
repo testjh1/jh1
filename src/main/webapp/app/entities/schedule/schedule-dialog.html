@@ -56,11 +56,15 @@
 
         <div class="form-group">
             <label data-translate="jh2App.schedule.presentation" for="field_presentation">Presentation</label>
-            <select class="form-control" id="field_presentation" multiple name="presentation" ng-model="vm.schedule.presentations" ng-options="presentation as presentation.namePresentation for presentation in vm.presentations track by presentation.id"></select>
+            <select class="form-control" id="field_presentation" name="presentation" ng-model="vm.schedule.presentation" ng-options="presentation as presentation.namePresentation for presentation in vm.presentations track by presentation.id">
+                <option value=""></option>
+            </select>
         </div>
         <div class="form-group">
             <label data-translate="jh2App.schedule.room" for="field_room">Room</label>
-            <select class="form-control" id="field_room" multiple name="room" ng-model="vm.schedule.rooms" ng-options="room as room.numberAudience for room in vm.rooms track by room.id"></select>
+            <select class="form-control" id="field_room" name="room" ng-model="vm.schedule.room" ng-options="room as room.numberAudience for room in vm.rooms track by room.id">
+                <option value=""></option>
+            </select>
         </div>
     </div>
     <div class="modal-footer">

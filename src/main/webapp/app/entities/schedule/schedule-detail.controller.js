@@ -5,9 +5,9 @@
         .module('jh2App')
         .controller('ScheduleDetailController', ScheduleDetailController);
 
-    ScheduleDetailController.$inject = ['Room', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Schedule', 'Presentation'];
+    ScheduleDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Schedule', 'Presentation', 'Room'];
 
-    function ScheduleDetailController(Room, $scope, $rootScope, $stateParams, previousState, entity, Schedule, Presentation) {
+    function ScheduleDetailController($scope, $rootScope, $stateParams, previousState, entity, Schedule, Presentation, Room) {
         var vm = this;
 
         vm.schedule = entity;
@@ -16,6 +16,6 @@
         var unsubscribe = $rootScope.$on('jh2App:scheduleUpdate', function(event, result) {
             vm.schedule = result;
         });
-        Room.$on('$destroy', unsubscribe);
+        $scope.$on('$destroy', unsubscribe);
     }
 })();

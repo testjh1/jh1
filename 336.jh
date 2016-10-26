@@ -14,10 +14,12 @@ entity Room {
 	numberAudience Long required
 }
 
+relationship ManyToOne {
+	Schedule{presentation(namePresentation)} to Presentation,
+	Schedule{room(numberAudience)} to Room
+}
 
 relationship ManyToMany {
-	Schedule{presentation(namePresentation)} to Presentation,
-	Schedule{room(numberAudience)} to Room,  
 	Presentation{user(login)} to User  
 }
 
