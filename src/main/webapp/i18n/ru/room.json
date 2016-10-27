@@ -2,21 +2,21 @@
     "jh2App": {
         "room" : {
             "home": {
-                "title": "Rooms",
-                "createLabel": "Создать новый Room",
-                "createOrEditLabel": "Создать или отредактировать Room",
-                "search": "Найти Room"
+                "title": "Аудитории",
+                "createLabel": "Создать новую Аудиторию",
+                "createOrEditLabel": "Создать или отредактировать Аудиторию",
+                "search": "Найти Аудиторию"
             },
-            "created": "Новый Room создан с идентификатором {{ param }}",
-            "updated": "Room обновлен с идентификатором {{ param }}",
-            "deleted": "Room удален с идентификатором {{ param }}",
+            "created": "Новая Аудитория создан с идентификатором {{ param }}",
+            "updated": "Аудитория обновлена с идентификатором {{ param }}",
+            "deleted": "Аудитория удалена с идентификатором {{ param }}",
             "delete": {
-                "question": "Вы уверены что хотите удалить Room {{ id }}?"
+                "question": "Вы уверены что хотите удалить Аудиторию {{ id }}?"
             },
             "detail": {
-                "title": "Room"
+                "title": "Аудитории"
             },
-            "numberAudience": "Number Audience"
+            "numberAudience": "Номер Аудитории"
         }
     }
 }

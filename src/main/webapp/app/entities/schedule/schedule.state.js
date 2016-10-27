@@ -12,6 +12,7 @@
         .state('schedule', {
             parent: 'entity',
             url: '/schedule',
+
             data: {
                 authorities: ['ROLE_USER'],
                 pageTitle: 'jh2App.schedule.home.title'

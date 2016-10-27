@@ -5,7 +5,7 @@
         .module('jh2App')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', 'Principal', 'LoginService', '$state'];
+    HomeController.$inject = ['$scope', 'Principal', 'LoginService', '$state', 'Schedule'];
 
     function HomeController ($scope, Principal, LoginService, $state) {
         var vm = this;
@@ -14,11 +14,12 @@
         vm.isAuthenticated = null;
         vm.login = LoginService.open;
         vm.register = register;
+
         $scope.$on('authenticationSuccess', function() {
             getAccount();
         });
 
-        getAccount();
+             getAccount();
 
         function getAccount() {
             Principal.identity().then(function(account) {
@@ -26,6 +27,7 @@
                 vm.isAuthenticated = Principal.isAuthenticated;
             });
         }
+
         function register () {
             $state.go('register');
         }

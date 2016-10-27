@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="schedule.new" >
+                <button class="btn btn-primary" ui-sref="schedule.new" has-any-authority="ROLE_ADMIN, ROLE_PRESENTER">
                     <span class="glyphicon glyphicon-plus"></span>
                     <span  data-translate="jh2App.schedule.home.createLabel">
                         Create new Schedule
@@ -55,7 +55,8 @@
                             </button>
                             <button type="submit"
                                     ui-sref="schedule.delete({id:schedule.id})"
-                                    class="btn btn-danger btn-sm">
+                                    class="btn btn-danger btn-sm"
+                                    has-any-authority="ROLE_ADMIN">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                 <span class="hidden-xs hidden-sm" data-translate="entity.action.delete"></span>
                             </button>

@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="presentation.new" >
+                <button class="btn btn-primary" ui-sref="presentation.new" has-any-authority="ROLE_ADMIN, ROLE_PRESENTER">
                     <span class="glyphicon glyphicon-plus"></span>
                     <span  data-translate="jh2App.presentation.home.createLabel">
                         Create new Presentation

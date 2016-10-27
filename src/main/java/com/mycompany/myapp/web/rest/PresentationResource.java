@@ -47,6 +47,9 @@ public class PresentationResource {
     @Timed
     @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Presentation> createPresentation(@Valid @RequestBody Presentation presentation) throws URISyntaxException {
+        if (presentation.getUsers().isEmpty()){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("Error", "users not null!", "")).body(null);
+        }
         log.debug("REST request to save Presentation : {}", presentation);
         if (presentation.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("presentation", "idexists", "A new presentation cannot already have an ID")).body(null);
@@ -72,6 +75,9 @@ public class PresentationResource {
     @Timed
     @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Presentation> updatePresentation(@Valid @RequestBody Presentation presentation) throws URISyntaxException {
+        if (presentation.getUsers().isEmpty()){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("Error", "users not null!", "")).body(null);
+        }
         log.debug("REST request to update Presentation : {}", presentation);
         if (presentation.getId() == null) {
             return createPresentation(presentation);

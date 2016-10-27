@@ -2,24 +2,24 @@
     "jh2App": {
         "presentation" : {
             "home": {
-                "title": "Presentations",
-                "createLabel": "Создать новый Presentation",
-                "createOrEditLabel": "Создать или отредактировать Presentation",
-                "search": "Найти Presentation"
+                "title": "Презентации",
+                "createLabel": "Создать новую Презентацию",
+                "createOrEditLabel": "Создать или отредактировать Презентацию",
+                "search": "Найти Презентацию"
             },
-            "created": "Новый Presentation создан с идентификатором {{ param }}",
-            "updated": "Presentation обновлен с идентификатором {{ param }}",
-            "deleted": "Presentation удален с идентификатором {{ param }}",
+            "created": "Новая Презентация создана с идентификатором {{ param }}",
+            "updated": "Презентация обновлена с идентификатором {{ param }}",
+            "deleted": "Презентация удалена с идентификатором {{ param }}",
             "delete": {
-                "question": "Вы уверены что хотите удалить Presentation {{ id }}?"
+                "question": "Вы уверены что хотите удалить Презентацию {{ id }}?"
             },
             "detail": {
-                "title": "Presentation"
+                "title": "Презентации"
             },
-            "namePresentation": "Name Presentation",
-            "topicPresentation": "Topic Presentation",
-            "textPresentation": "Text Presentation",
-            "user": "User"
+            "namePresentation": "Название Презентации",
+            "topicPresentation": "Тема Презентации",
+            "textPresentation": "Текст Презентации",
+            "user": "Пользователь"
         }
     }
 }

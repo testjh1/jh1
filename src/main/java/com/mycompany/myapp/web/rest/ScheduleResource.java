@@ -1,26 +1,25 @@
 package com.mycompany.myapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mycompany.myapp.domain.Schedule;
+import com.mycompany.myapp.domain.*;
 
+import com.mycompany.myapp.repository.PresentationRepository;
 import com.mycompany.myapp.repository.ScheduleRepository;
 import com.mycompany.myapp.security.AuthoritiesConstants;
+import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
 import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing Schedule.
@@ -29,10 +28,15 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class ScheduleResource {
 
+    public long minTime = 900; // Минимальая продолжительность презентации в секундах
+
     private final Logger log = LoggerFactory.getLogger(ScheduleResource.class);
 
     @Inject
     private ScheduleRepository scheduleRepository;
+
+    @Inject
+    private PresentationRepository presentationRepository;
 
     /**
      * POST  /schedules : Create a new schedule.
@@ -48,9 +52,16 @@ public class ScheduleResource {
     @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Schedule> createSchedule(@Valid @RequestBody Schedule schedule) throws URISyntaxException {
         log.debug("REST request to save Schedule : {}", schedule);
+
+
+        if ((schedule.getEndSchedule().toEpochSecond())-(schedule.getBeginSchedule().toEpochSecond())<minTime){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "minTime", "begin!=end")).body(null);
+        }
+
         if (schedule.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("schedule", "idexists", "A new schedule cannot already have an ID")).body(null);
         }
+
         Schedule result = scheduleRepository.save(schedule);
         return ResponseEntity.created(new URI("/api/schedules/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("schedule", result.getId().toString()))
@@ -66,12 +77,25 @@ public class ScheduleResource {
      * or with status 500 (Internal Server Error) if the schedule couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
+
     @RequestMapping(value = "/schedules",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Schedule> updateSchedule(@Valid @RequestBody Schedule schedule) throws URISyntaxException {
+
+        Presentation presentation = presentationRepository.findOneWithEagerRelationships(schedule.getPresentation().getId());
+        Set<String> logins = new HashSet<>();
+
+        presentation.getUsers().stream().forEach(user ->  {
+            logins.add(user.getLogin());
+        });
+
+        if (!logins.contains(SecurityUtils.getCurrentUserLogin())) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("Error", "You are not owner", "")).body(null);
+        }
+
         log.debug("REST request to update Schedule : {}", schedule);
         if (schedule.getId() == null) {
             return createSchedule(schedule);
@@ -127,9 +151,9 @@ public class ScheduleResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id) {
-        log.debug("REST request to delete Schedule : {}", id);
+    @Secured({AuthoritiesConstants.ADMIN})
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id ) {
+       log.debug("REST request to delete Schedule : {}", id);
         scheduleRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("schedule", id.toString())).build();
     }

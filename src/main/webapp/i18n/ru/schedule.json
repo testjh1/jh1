@@ -2,24 +2,24 @@
     "jh2App": {
         "schedule" : {
             "home": {
-                "title": "Schedules",
-                "createLabel": "Создать новый Schedule",
-                "createOrEditLabel": "Создать или отредактировать Schedule",
+                "title": "Расписание",
+                "createLabel": "Создать новое Расписание",
+                "createOrEditLabel": "Создать или отредактировать Расписание",
                 "search": "Найти Schedule"
             },
-            "created": "Новый Schedule создан с идентификатором {{ param }}",
-            "updated": "Schedule обновлен с идентификатором {{ param }}",
-            "deleted": "Schedule удален с идентификатором {{ param }}",
+            "created": "Новое Расписание создано с идентификатором {{ param }}",
+            "updated": "Расписание обновлено с идентификатором {{ param }}",
+            "deleted": "Расписание удалено с идентификатором {{ param }}",
             "delete": {
-                "question": "Вы уверены что хотите удалить Schedule {{ id }}?"
+                "question": "Вы уверены что хотите удалить Расписание {{ id }}?"
             },
             "detail": {
-                "title": "Schedule"
+                "title": "Расписание"
             },
-            "beginSchedule": "Begin Schedule",
-            "endSchedule": "End Schedule",
-            "presentation": "Presentation",
-            "room": "Room"
+            "beginSchedule": "Начало презентации",
+            "endSchedule": "Конец презентации",
+            "presentation": "Презентация",
+            "room": "Аудитория"
         }
     }
 }
