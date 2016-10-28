@@ -17,8 +17,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
@@ -29,6 +31,7 @@ import java.util.*;
 public class ScheduleResource {
 
     public long minTime = 900; // Минимальая продолжительность презентации в секундах
+    public long maxTime = 14400; // Максимальная продолжительность презентации в секундах, 4 часа по дефолту
 
     private final Logger log = LoggerFactory.getLogger(ScheduleResource.class);
 
@@ -51,17 +54,25 @@ public class ScheduleResource {
     @Timed
     @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Schedule> createSchedule(@Valid @RequestBody Schedule schedule) throws URISyntaxException {
-        log.debug("REST request to save Schedule : {}", schedule);
 
 
-        if ((schedule.getEndSchedule().toEpochSecond())-(schedule.getBeginSchedule().toEpochSecond())<minTime){
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "minTime", "begin!=end")).body(null);
+        if (isFreeRoomsForCurrentTime(schedule.getRoom().getId(),schedule.getBeginSchedule(), schedule.getEndSchedule())){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "audience is busy at this time", "")).body(null);
+        }
+
+        if ((schedule.getEndSchedule().toEpochSecond())-(schedule.getBeginSchedule().toEpochSecond()) < minTime){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "minTime", "")).body(null);
+        }
+
+        if ((schedule.getEndSchedule().toEpochSecond())-(schedule.getBeginSchedule().toEpochSecond()) > maxTime){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "maxTime", "")).body(null);
         }
 
         if (schedule.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("schedule", "idexists", "A new schedule cannot already have an ID")).body(null);
         }
 
+        log.debug("REST request to save Schedule : {}", schedule);
         Schedule result = scheduleRepository.save(schedule);
         return ResponseEntity.created(new URI("/api/schedules/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("schedule", result.getId().toString()))
@@ -156,6 +167,12 @@ public class ScheduleResource {
        log.debug("REST request to delete Schedule : {}", id);
         scheduleRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("schedule", id.toString())).build();
+    }
+
+    private boolean isFreeRoomsForCurrentTime(Long roomId, ZonedDateTime beginTime, ZonedDateTime endTime){
+
+       return scheduleRepository.countByRoomIdAndBeginScheduleBetweenOrEndScheduleBetweenAndRoomIdOrBeginScheduleLessThanAndEndScheduleGreaterThanAndRoomId(
+            roomId, beginTime, endTime, beginTime, endTime, roomId, beginTime, endTime, roomId)>0;
     }
 
 }

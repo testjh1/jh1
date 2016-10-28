@@ -117,9 +117,11 @@ public class Schedule implements Serializable {
     @Override
     public String toString() {
         return "Schedule{" +
-            "id=" + id +
-            ", beginSchedule='" + beginSchedule + "'" +
-            ", endSchedule='" + endSchedule + "'" +
-            '}';
+                "id=" + id +
+                ", beginSchedule=" + beginSchedule +
+                ", endSchedule=" + endSchedule +
+                ", presentation=" + presentation +
+                ", room=" + room +
+                '}';
     }
 }
