@@ -68,6 +68,12 @@ public class ScheduleResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "maxTime", "")).body(null);
         }
 
+        long epoch = System.currentTimeMillis()/1000;
+
+        if (schedule.getBeginSchedule().toEpochSecond()<=epoch){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "time is over", "")).body(null);
+        }
+
         if (schedule.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("schedule", "idexists", "A new schedule cannot already have an ID")).body(null);
         }
@@ -129,6 +135,9 @@ public class ScheduleResource {
     public List<Schedule> getAllSchedules() {
         log.debug("REST request to get all Schedules");
         List<Schedule> schedules = scheduleRepository.findAll();
+        schedules.sort((Schedule a1, Schedule a2) ->{
+            return a1.getRoom().getId().compareTo(a2.getRoom().getId());
+        });
         return schedules;
     }
 
