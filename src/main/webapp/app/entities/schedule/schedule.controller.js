@@ -9,14 +9,19 @@
 
     function ScheduleController ($scope, $state, Schedule) {
         var vm = this;
-        
-        vm.schedules = [];
 
+        vm.schedules = {};
         loadAll();
 
         function loadAll() {
             Schedule.query(function(result) {
-                vm.schedules = result;
+                angular.forEach(result, function (value, key) {
+                    if (!vm.schedules[value.room.numberAudience]){
+                        vm.schedules[value.room.numberAudience] = [];
+                    }
+                    vm.schedules[value.room.numberAudience].push(value);
+                });
+                console.log(vm.schedules);
             });
         }
     }

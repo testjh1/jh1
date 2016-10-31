@@ -14,12 +14,13 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
+    <div class="table-responsive" ng-repeat="room in vm.schedules track by $index" ng-if="room" style="border: solid 2px #ddd; margin-bottom: 10px">
+        <h3 style="padding-left: 30px">Аудитория: {{room[0].room.numberAudience}}</h3>
+        <table class="jh-table table">
             <thead>
                 <tr>
-                    <th><span data-translate="global.field.id">ID</span></th>
-                    <th><span data-translate="jh2App.schedule.room">Room</span></th>
+                    <!--<th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="jh2App.schedule.room">Room</span></th>-->
                     <th><span data-translate="jh2App.schedule.beginSchedule">Begin Schedule</span></th>
                     <th><span data-translate="jh2App.schedule.endSchedule">End Schedule</span></th>
                     <th><span data-translate="jh2App.schedule.presentation">Presentation</span></th>
@@ -27,12 +28,12 @@
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr ng-repeat="schedule in vm.schedules track by schedule.id">
-                    <td><a ui-sref="schedule-detail({id:schedule.id})">{{schedule.id}}</a></td>
+            <tbody style="background-color: #f9f9f9">
+                <tr ng-repeat="schedule in room track by schedule.id">
+                    <!--<td><a ui-sref="schedule-detail({id:schedule.id})">{{schedule.id}}</a></td>
                     <td>
                         <a ui-sref="room-detail({id:schedule.room.id})">{{schedule.room.numberAudience}}</a>
-                    </td>
+                    </td>-->
                     <td>{{schedule.beginSchedule | date:'medium'}}</td>
                     <td>{{schedule.endSchedule | date:'medium'}}</td>
                     <td>
