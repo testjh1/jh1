@@ -1,10 +1,13 @@
 package com.mycompany.myapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.codahale.metrics.servlets.AdminServlet;
 import com.mycompany.myapp.domain.*;
 
 import com.mycompany.myapp.repository.PresentationRepository;
+import com.mycompany.myapp.repository.RoomRepository;
 import com.mycompany.myapp.repository.ScheduleRepository;
+import com.mycompany.myapp.repository.UserRepository;
 import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.security.SecurityUtils;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
@@ -40,6 +43,12 @@ public class ScheduleResource {
 
     @Inject
     private PresentationRepository presentationRepository;
+
+    @Inject
+    private RoomRepository roomRepository;
+
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * POST  /schedules : Create a new schedule.

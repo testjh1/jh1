@@ -3,8 +3,10 @@ package com.mycompany.myapp.web.rest;
 import com.mycompany.myapp.Jh2App;
 
 import com.mycompany.myapp.domain.Presentation;
+import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.PresentationRepository;
 
+import com.mycompany.myapp.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -38,6 +42,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = Jh2App.class)
 public class PresentationResourceIntTest {
 
+    @Inject
+    private UserRepository userRepository;
+
     private static final String DEFAULT_NAME_PRESENTATION = "AAAAA";
     private static final String UPDATED_NAME_PRESENTATION = "BBBBB";
 
@@ -46,6 +53,7 @@ public class PresentationResourceIntTest {
 
     private static final String DEFAULT_TEXT_PRESENTATION = "AAAAA";
     private static final String UPDATED_TEXT_PRESENTATION = "BBBBB";
+    private User admTest;
 
     @Inject
     private PresentationRepository presentationRepository;
@@ -63,14 +71,17 @@ public class PresentationResourceIntTest {
 
     private Presentation presentation;
 
+
     @PostConstruct
     public void setup() {
         MockitoAnnotations.initMocks(this);
         PresentationResource presentationResource = new PresentationResource();
         ReflectionTestUtils.setField(presentationResource, "presentationRepository", presentationRepository);
+        ReflectionTestUtils.setField(presentationResource, "userRepository", userRepository);
         this.restPresentationMockMvc = MockMvcBuilders.standaloneSetup(presentationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();
+        admTest = userRepository.findOneByLogin("admin").get();
     }
 
     /**
@@ -79,11 +90,12 @@ public class PresentationResourceIntTest {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Presentation createEntity(EntityManager em) {
+    public Presentation createEntity(EntityManager em) {
         Presentation presentation = new Presentation()
                 .namePresentation(DEFAULT_NAME_PRESENTATION)
                 .topicPresentation(DEFAULT_TOPIC_PRESENTATION)
-                .textPresentation(DEFAULT_TEXT_PRESENTATION);
+                .textPresentation(DEFAULT_TEXT_PRESENTATION)
+                .addUser(admTest);
         return presentation;
     }
 
@@ -111,6 +123,7 @@ public class PresentationResourceIntTest {
         assertThat(testPresentation.getNamePresentation()).isEqualTo(DEFAULT_NAME_PRESENTATION);
         assertThat(testPresentation.getTopicPresentation()).isEqualTo(DEFAULT_TOPIC_PRESENTATION);
         assertThat(testPresentation.getTextPresentation()).isEqualTo(DEFAULT_TEXT_PRESENTATION);
+        assertThat(testPresentation.getUsers().contains(admTest));
     }
 
     @Test

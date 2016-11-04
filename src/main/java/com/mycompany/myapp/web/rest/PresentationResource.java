@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.Presentation;
 
 import com.mycompany.myapp.repository.PresentationRepository;
+import com.mycompany.myapp.repository.UserRepository;
 import com.mycompany.myapp.security.AuthoritiesConstants;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
@@ -33,6 +34,9 @@ public class PresentationResource {
 
     @Inject
     private PresentationRepository presentationRepository;
+
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * POST  /presentations : Create a new presentation.

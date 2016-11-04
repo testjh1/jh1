@@ -40,10 +40,16 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
     mail:
-        host: localhost
-        port: 25
-        username:
-        password:
+        host: smtp.gmail.com
+        port: 587
+        username: mailtestjh2@gmail.com
+        password: qrlD1zZ8AG
+        protocol: smtp
+        tls: true
+        properties.mail.smtp:
+                    auth: true
+                    starttls.enable: true
+                    ssl.trust: smtp.gmail.com
     messages:
         cache-seconds: 1
     thymeleaf:
@@ -65,7 +71,7 @@ jhipster:
             # security key (this key should be unique for your application, and kept secret)
             key: 3df49672ae53bc71cd2f4a08975654181f4f2e2f
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: jh2@localhost
+        from: mailtestjh2@gmail.com
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         spark:
