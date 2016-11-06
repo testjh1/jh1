@@ -46,6 +46,16 @@
         </createTable>
 
         <addPrimaryKey columnNames="presentations_id, users_id" tableName="presentation_user"/>
+		
+		<loadData encoding="UTF-8"
+                  file="config/liquibase/presentation.csv"
+                  separator=";"
+                  tableName="presentation"/>		
+
+		<loadData encoding="UTF-8"
+                  file="config/liquibase/presentation_user.csv"
+                  separator=";"
+                  tableName="presentation_user"/>
         
     </changeSet>
 </databaseChangeLog>

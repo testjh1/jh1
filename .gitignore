@@ -136,3 +136,4 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+classes/

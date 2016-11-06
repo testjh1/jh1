@@ -42,5 +42,10 @@
         <dropDefaultValue tableName="schedule" columnName="begin_schedule" columnDataType="datetime"/>
         <dropDefaultValue tableName="schedule" columnName="end_schedule" columnDataType="datetime"/>
         
+		<loadData encoding="UTF-8"
+                  file="config/liquibase/schedule.csv"
+                  separator=";"
+                  tableName="schedule"/>
+				  
     </changeSet>
 </databaseChangeLog>
