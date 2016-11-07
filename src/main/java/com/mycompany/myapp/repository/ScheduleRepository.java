@@ -18,5 +18,11 @@ public interface ScheduleRepository extends JpaRepository<Schedule,Long> {
     Long countByRoomIdAndBeginScheduleBetweenOrEndScheduleBetweenAndRoomIdOrBeginScheduleLessThanAndEndScheduleGreaterThanAndRoomId (
             Long id, ZonedDateTime begin, ZonedDateTime end, ZonedDateTime begin1, ZonedDateTime end1, Long id1, ZonedDateTime begin2, ZonedDateTime end2, Long id2);
 
+    @Query("select distinct schedule from Schedule schedule left join fetch schedule.listeners")
+    List<Schedule> findAllWithEagerRelationships();
+
+    @Query("select schedule from Schedule schedule left join fetch schedule.listeners where schedule.id =:id")
+    Schedule findOneWithEagerRelationships(@Param("id") Long id);
+
 
 }

@@ -11,6 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'reg': { method: 'PATCH' },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
@@ -24,5 +25,6 @@
             },
             'update': { method:'PUT' }
         });
+
     }
 })();

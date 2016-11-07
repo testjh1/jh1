@@ -5,7 +5,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Schedule.
@@ -33,6 +35,35 @@ public class Schedule implements Serializable {
 
     @ManyToOne
     private Room room;
+
+    @ManyToMany
+    @JoinTable(name = "schedule_listener",
+        joinColumns = @JoinColumn(name="schedule_id", referencedColumnName="ID"),
+        inverseJoinColumns = @JoinColumn(name="users_id", referencedColumnName="ID"))
+    private Set<User> listeners = new HashSet<>();
+
+    public Set<User> getListeners() {
+        return listeners;
+    }
+
+    public Schedule listeners(Set<User> listeners) {
+        this.listeners = listeners;
+        return this;
+    }
+
+    public Schedule addListener(User listener) {
+        listeners.add(listener);
+        return this;
+    }
+
+    public Schedule removeListener(User listener) {
+        listeners.remove(listener);
+        return this;
+    }
+
+    public void setListeners(Set<User> listeners) {
+        this.listeners = listeners;
+    }
 
     public Long getId() {
         return id;

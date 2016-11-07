@@ -20,6 +20,12 @@
         <dd>
             <a ui-sref="room-detail({id:vm.schedule.room.id})">{{vm.schedule.room.numberAudience}}</a>
         </dd>
+        <dt><span data-translate="jh2App.schedule.listener">User</span></dt>
+        <dd>
+            <span ng-repeat="user in vm.schedule.listeners">
+                {{user.login}}{{$last ? '' : ', '}}
+            </span>
+        </dd>
     </dl>
 
     <button type="submit"
@@ -28,8 +34,12 @@
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
     </button>
 
-    <button type="button" ui-sref="schedule-detail.edit({id:vm.schedule.id})" class="btn btn-primary">
+    <button type="button" ui-sref="schedule-detail.edit({id:vm.schedule.id})" class="btn btn-primary" has-any-authority="ROLE_ADMIN, ROLE_PRESENTER">
         <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit" > Edit</span>
+    </button>
+    <button type="button" ui-sref="schedule-detail.reg({id:vm.schedule.id})" class="btn btn-primary" has-any-authority="ROLE_LISTENER">
+        <span class="glyphicon glyphicon-plus"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.reg" > Registration</span>
     </button>
 </div>

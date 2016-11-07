@@ -19,6 +19,7 @@
             "beginSchedule": "Начало презентации",
             "endSchedule": "Конец презентации",
             "presentation": "Презентация",
+            "listener": "Слушатели",
             "room": "Аудитория"
         }
     }

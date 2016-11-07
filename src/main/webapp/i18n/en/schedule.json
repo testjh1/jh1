@@ -19,6 +19,7 @@
             "beginSchedule": "Begin Schedule",
             "endSchedule": "End Schedule",
             "presentation": "Presentation",
+            "listener": "Listener",
             "room": "Room"
         }
     }

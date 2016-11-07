@@ -162,12 +162,27 @@ public class ScheduleResource {
     @Timed
     public ResponseEntity<Schedule> getSchedule(@PathVariable Long id) {
         log.debug("REST request to get Schedule : {}", id);
-        Schedule schedule = scheduleRepository.findOne(id);
+        Schedule schedule = scheduleRepository.findOneWithEagerRelationships(id);
         return Optional.ofNullable(schedule)
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+
+    @RequestMapping(value = "/schedules",
+        method = RequestMethod.PATCH,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Schedule> regSchedule(@RequestBody Schedule schedule) throws URISyntaxException  {
+        // TODO: 07.11.2016  
+        Long id = schedule.getId();
+        Schedule result = scheduleRepository.save(scheduleRepository.findOneWithEagerRelationships(id).addListener(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get()));
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("schedule", schedule.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -176,7 +191,7 @@ public class ScheduleResource {
      * @param id the id of the schedule to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @RequestMapping(value = "/schedules/{id}",
+    @RequestMapping(value = "/schedules",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed

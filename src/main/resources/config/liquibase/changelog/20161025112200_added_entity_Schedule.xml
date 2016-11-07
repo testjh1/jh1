@@ -24,11 +24,11 @@
             <column name="begin_schedule" type="timestamp">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="end_schedule" type="timestamp">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="presentation_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -41,11 +41,25 @@
         </createTable>
         <dropDefaultValue tableName="schedule" columnName="begin_schedule" columnDataType="datetime"/>
         <dropDefaultValue tableName="schedule" columnName="end_schedule" columnDataType="datetime"/>
-        
+
+        <createTable tableName="schedule_listener">
+            <column name="users_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="schedule_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="schedule_id, users_id" tableName="schedule_listener"/>
+
 		<loadData encoding="UTF-8"
                   file="config/liquibase/schedule.csv"
                   separator=";"
                   tableName="schedule"/>
-				  
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/schedule_listener.csv"
+                  separator=";"
+                  tableName="schedule_listener"/>
+
     </changeSet>
 </databaseChangeLog>

@@ -89,6 +89,29 @@
                 });
             }]
         })
+         .state('schedule-detail.reg', {
+             parent: 'schedule-detail',
+             url: '/reg',
+             data: {
+                 authorities: ['ROLE_USER']
+             },
+             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                 $uibModal.open({
+                     templateUrl: 'app/entities/schedule/schedule-reg-dialog.html',
+                     controller: 'ScheduleRegController',
+                     controllerAs: 'vm',
+                     resolve: {
+                         entity: ['Schedule', function(Schedule) {
+                             return Schedule.get({id : $stateParams.id}).$promise;
+                         }]
+                     }
+                 }).result.then(function() {
+                     $state.go('schedule', null, { reload: 'schedule' });
+                 }, function() {
+                     $state.go('^');
+                 });
+             }]
+         })
         .state('schedule.new', {
             parent: 'schedule',
             url: '/new',
