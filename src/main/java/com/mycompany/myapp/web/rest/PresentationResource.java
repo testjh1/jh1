@@ -35,9 +35,6 @@ public class PresentationResource {
     @Inject
     private PresentationRepository presentationRepository;
 
-    @Inject
-    private UserRepository userRepository;
-
     /**
      * POST  /presentations : Create a new presentation.
      *

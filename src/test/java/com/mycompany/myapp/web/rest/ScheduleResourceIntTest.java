@@ -1,25 +1,21 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.Jh2App;
-
 import com.mycompany.myapp.domain.Presentation;
 import com.mycompany.myapp.domain.Room;
 import com.mycompany.myapp.domain.Schedule;
-import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.PresentationRepository;
 import com.mycompany.myapp.repository.RoomRepository;
 import com.mycompany.myapp.repository.ScheduleRepository;
-
 import com.mycompany.myapp.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -29,13 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.ZoneId;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -79,8 +74,6 @@ public class ScheduleResourceIntTest {
 
     private Schedule schedule;
 
-    private User admTest;
-
     Presentation presentation = new Presentation();
     Room room = new Room();
 
@@ -89,7 +82,6 @@ public class ScheduleResourceIntTest {
         MockitoAnnotations.initMocks(this);
         ScheduleResource scheduleResource = new ScheduleResource();
         ReflectionTestUtils.setField(scheduleResource, "scheduleRepository", scheduleRepository);
-        ReflectionTestUtils.setField(scheduleResource, "roomRepository", roomRepository);
         ReflectionTestUtils.setField(scheduleResource, "presentationRepository", presentationRepository);
         this.restScheduleMockMvc = MockMvcBuilders.standaloneSetup(scheduleResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)

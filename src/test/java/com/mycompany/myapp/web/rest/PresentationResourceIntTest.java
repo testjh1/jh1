@@ -1,21 +1,18 @@
 package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.Jh2App;
-
 import com.mycompany.myapp.domain.Presentation;
 import com.mycompany.myapp.domain.User;
 import com.mycompany.myapp.repository.PresentationRepository;
-
 import com.mycompany.myapp.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,11 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -77,7 +73,6 @@ public class PresentationResourceIntTest {
         MockitoAnnotations.initMocks(this);
         PresentationResource presentationResource = new PresentationResource();
         ReflectionTestUtils.setField(presentationResource, "presentationRepository", presentationRepository);
-        ReflectionTestUtils.setField(presentationResource, "userRepository", userRepository);
         this.restPresentationMockMvc = MockMvcBuilders.standaloneSetup(presentationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setMessageConverters(jacksonMessageConverter).build();

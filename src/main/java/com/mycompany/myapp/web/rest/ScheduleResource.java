@@ -45,9 +45,6 @@ public class ScheduleResource {
     private PresentationRepository presentationRepository;
 
     @Inject
-    private RoomRepository roomRepository;
-
-    @Inject
     private UserRepository userRepository;
 
     /**
@@ -63,31 +60,22 @@ public class ScheduleResource {
     @Timed
     @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Schedule> createSchedule(@Valid @RequestBody Schedule schedule) throws URISyntaxException {
-
-
+        log.debug("REST request to save Schedule : {}", schedule);
         if (isFreeRoomsForCurrentTime(schedule.getRoom().getId(),schedule.getBeginSchedule(), schedule.getEndSchedule())){
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "audience is busy at this time", "")).body(null);
         }
-
         if ((schedule.getEndSchedule().toEpochSecond())-(schedule.getBeginSchedule().toEpochSecond()) < minTime){
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "minTime", "")).body(null);
         }
-
         if ((schedule.getEndSchedule().toEpochSecond())-(schedule.getBeginSchedule().toEpochSecond()) > maxTime){
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "maxTime", "")).body(null);
         }
-
-        long epoch = System.currentTimeMillis()/1000;
-
-        if (schedule.getBeginSchedule().toEpochSecond()<=epoch){
+        if (schedule.getBeginSchedule().toEpochSecond()<=(System.currentTimeMillis()/1000)){
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("error", "time is over", "")).body(null);
         }
-
         if (schedule.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("schedule", "idexists", "A new schedule cannot already have an ID")).body(null);
         }
-
-        log.debug("REST request to save Schedule : {}", schedule);
         Schedule result = scheduleRepository.save(schedule);
         return ResponseEntity.created(new URI("/api/schedules/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("schedule", result.getId().toString()))
@@ -110,19 +98,15 @@ public class ScheduleResource {
     @Timed
     @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.PRESENTER})
     public ResponseEntity<Schedule> updateSchedule(@Valid @RequestBody Schedule schedule) throws URISyntaxException {
-
+        log.debug("REST request to update Schedule : {}", schedule);
         Presentation presentation = presentationRepository.findOneWithEagerRelationships(schedule.getPresentation().getId());
         Set<String> logins = new HashSet<>();
-
         presentation.getUsers().stream().forEach(user ->  {
             logins.add(user.getLogin());
         });
-
         if (!logins.contains(SecurityUtils.getCurrentUserLogin())) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("Error", "You are not owner", "")).body(null);
         }
-
-        log.debug("REST request to update Schedule : {}", schedule);
         if (schedule.getId() == null) {
             return createSchedule(schedule);
         }
@@ -170,19 +154,42 @@ public class ScheduleResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    /*Регистрация слушателя*/
 
     @RequestMapping(value = "/schedules",
         method = RequestMethod.PATCH,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Secured({AuthoritiesConstants.LISTENER, AuthoritiesConstants.ADMIN})
     public ResponseEntity<Schedule> regSchedule(@RequestBody Schedule schedule) throws URISyntaxException  {
-        // TODO: 07.11.2016  
         Long id = schedule.getId();
-        Schedule result = scheduleRepository.save(scheduleRepository.findOneWithEagerRelationships(id).addListener(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get()));
+        log.debug("REST request to reg Schedule :",id);
+        if (scheduleRepository.findOneWithEagerRelationships(id).getListeners().contains(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get())) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("Error", "You are already registered", "")).body(null);
+        }
+        Schedule oldSchedule = scheduleRepository.findOneWithEagerRelationships(id);
+        User currentUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        oldSchedule.addListener(currentUser);
+        Schedule result = scheduleRepository.save(oldSchedule);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("schedule", schedule.getId().toString())).body(result);
+    }
 
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("schedule", schedule.getId().toString()))
-            .body(result);
+    /*Отмена регистрации слушателя*/
+
+    @RequestMapping(value = "/schedules/reg/{id}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Secured({AuthoritiesConstants.LISTENER, AuthoritiesConstants.ADMIN})
+    public ResponseEntity<Void> cancelSchedule(@PathVariable Long id)  {
+        log.debug("REST request to cancel reg Schedule :",id);
+        if (!scheduleRepository.findOneWithEagerRelationships(id).getListeners().contains(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get())) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("Error", "You are not registered", "")).body(null);
+        }
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        Schedule schedule = scheduleRepository.findOneWithEagerRelationships(id).removeListener(user);
+        scheduleRepository.save(schedule);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("schedule", id.toString())).build();
     }
 
     /**
@@ -191,7 +198,7 @@ public class ScheduleResource {
      * @param id the id of the schedule to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    @RequestMapping(value = "/schedules",
+    @RequestMapping(value = "/schedules/{id}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
